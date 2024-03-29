@@ -39,4 +39,4 @@ Thank you to all contributors and supporters who help make this project better.
 
 ## Contact
 
-For any inquiries or support, feel free to contact [CellcS](mailto:)
+For any inquiries or support, feel free to contact [CellCS](mailto:)
