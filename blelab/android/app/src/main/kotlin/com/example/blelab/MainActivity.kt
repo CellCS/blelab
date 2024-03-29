@@ -1,4 +1,4 @@
-package com.example.blelab
+package com.minervalink.blelab
 
 import io.flutter.embedding.android.FlutterActivity
 
