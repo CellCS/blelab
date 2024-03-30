@@ -9,4 +9,5 @@ class AppConstants {
   static const String helptourpage = '/helptour';
   static const String homepage = '/home';
   static const String peripheralpage= '/bleperipheral';
+  static const String connecteddevicepage= '/connecteddevicepage';
 }

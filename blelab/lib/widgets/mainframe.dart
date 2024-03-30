@@ -24,6 +24,7 @@ class _MainPageFrameState extends State<MainPageFrame> {
   final appservice = AppService();
   int _selectedIndex = 0;
   double marginpading = 16;
+  double marginpadingdevice = 1;
 
   @override
   void initState() {
@@ -64,7 +65,8 @@ class _MainPageFrameState extends State<MainPageFrame> {
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(marginpading, 4, marginpading, 0),
+                padding: EdgeInsets.fromLTRB(
+                    marginpadingdevice, 4, marginpadingdevice, 0),
                 child: widget.subwidget,
               ),
             ),

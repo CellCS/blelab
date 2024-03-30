@@ -5,6 +5,8 @@ import 'package:blelab/screens/login/login_screen.dart';
 import 'package:blelab/widgets/splash/splashpage.dart';
 import 'package:blelab/widgets/splash/splashcontent.dart';
 import 'package:blelab/screens/homepage.dart';
+import '../utils/extra.dart';
+import 'package:blelab/screens/device_screen.dart';
 
 List<SplashContent> splashes = [
   SplashContent('assets/images/splash2.gif', ''),
@@ -32,6 +34,10 @@ class RouteGenerator {
     GetPage(
       name: AppConstants.peripheralpage,
       page: () => const LoginScreen(),
+    ),
+    GetPage(
+      name: AppConstants.connecteddevicepage,
+      page: () => DeviceScreen(device: Get.arguments['device']),
     ),
   ];
 
