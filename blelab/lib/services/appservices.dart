@@ -3,6 +3,7 @@ import 'package:blelab/services/appstate.dart';
 import 'package:blelab/utils/app_constants.dart';
 import 'dart:math';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_ble_peripheral/flutter_ble_peripheral.dart';
 
 class AppService {
   bool isDebugMode = false;
@@ -64,6 +65,36 @@ class AppService {
     if (await canLaunchUrl(urlpath)) {
       await launchUrl(urlpath);
     } else {}
+  }
+
+  Future<String> requestPermissions() async {
+    final hasPermission = await FlutterBlePeripheral().hasPermission();
+    String ans = "";
+    bool enabled = await FlutterBlePeripheral().enableBluetooth(askUser: false);
+    if (!enabled) {
+      appState.toastmessage("Bluetooth not enabled (code 1)");
+    }
+    enabled = await FlutterBlePeripheral().enableBluetooth();
+    if (!enabled) {
+      appState.toastmessage("Bluetooth not enabled (code 2)");
+    }
+    switch (hasPermission) {
+      case BluetoothPeripheralState.denied:
+        enabled = await FlutterBlePeripheral().enableBluetooth(askUser: false);
+        if (!enabled) {
+          appState.toastmessage("Bluetooth not enabled (code 1)");
+        }
+        enabled = await FlutterBlePeripheral().enableBluetooth();
+        if (!enabled) {
+          appState.toastmessage("Bluetooth not enabled (code 2)");
+        }
+        //await requestPermissions();
+        break;
+      default:
+        'State: $hasPermission!';
+        break;
+    }
+    return ans;
   }
 
   ///end

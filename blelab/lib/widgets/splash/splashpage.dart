@@ -52,6 +52,7 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _skipToLogin() async {
     _timer.cancel();
     appservice.setBusy(false);
+    await appservice.requestPermissions();
     Get.offAllNamed(AppConstants.loginpage);
   }
 

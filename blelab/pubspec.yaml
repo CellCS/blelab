@@ -41,6 +41,7 @@ dependencies:
   animated_background: ^2.0.0
   # BLE Scanner
   flutter_blue_plus:
+  flutter_ble_peripheral:
   get:
   permission_handler:
   async: ^2.11.0

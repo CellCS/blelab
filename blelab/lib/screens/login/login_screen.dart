@@ -25,6 +25,8 @@ class _LoginScreenState extends State<LoginScreen>
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Get.offAllNamed(AppConstants.homepage);
+      } else if (status == AnimationStatus.forward) {
+        //Get.offAllNamed(AppConstants.homepage);
       }
     });
   }

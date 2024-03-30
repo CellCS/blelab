@@ -4,6 +4,7 @@ import 'package:blelab/utils/app_constants.dart';
 import 'package:blelab/screens/login/login_screen.dart';
 import 'package:blelab/widgets/splash/splashpage.dart';
 import 'package:blelab/widgets/splash/splashcontent.dart';
+import 'package:blelab/screens/homepage.dart';
 
 List<SplashContent> splashes = [
   SplashContent('assets/images/splash2.gif', ''),
@@ -23,6 +24,14 @@ class RouteGenerator {
     GetPage(
       name: AppConstants.splashpage,
       page: () => SplashPage(contents: splashes),
+    ),
+    GetPage(
+      name: AppConstants.homepage,
+      page: () => const HomePage(),
+    ),
+    GetPage(
+      name: AppConstants.peripheralpage,
+      page: () => const LoginScreen(),
     ),
   ];
 
