@@ -1,92 +1,63 @@
-// Copyright 2017-2023, Charles Weinberger & Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:get/get.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'screens/bluetooth_off_screen.dart';
-import 'screens/scan_screen.dart';
+import 'package:blelab/services/appservices.dart';
+import 'package:blelab/services/appstate.dart';
+import 'package:blelab/routes/route_generator.dart';
+import 'package:blelab/utils/app_constants.dart';
 
-void main() {
-  FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
-  runApp(const FlutterBlueApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(AppStateController());
+  runApp(
+    const MyApp(),
+  );
 }
 
-//
-// This widget shows BluetoothOffScreen or
-// ScanScreen depending on the adapter state
-//
-class FlutterBlueApp extends StatefulWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  State<FlutterBlueApp> createState() => _FlutterBlueAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _FlutterBlueAppState extends State<FlutterBlueApp> {
-  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
-
-  late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
-
+class _MyAppState extends State<MyApp> {
+  dynamic subscription;
+  bool initialized = false;
   @override
   void initState() {
+    initialized = false;
     super.initState();
-    _adapterStateStateSubscription = FlutterBluePlus.adapterState.listen((state) {
-      _adapterState = state;
-      if (mounted) {
-        setState(() {});
-      }
-    });
   }
 
   @override
-  void dispose() {
-    _adapterStateStateSubscription.cancel();
+  dispose() {
+    subscription.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget screen = _adapterState == BluetoothAdapterState.on
-        ? const ScanScreen()
-        : BluetoothOffScreen(adapterState: _adapterState);
-
-    return MaterialApp(
-      color: Colors.lightBlue,
-      home: screen,
-      navigatorObservers: [BluetoothAdapterStateObserver()],
-    );
-  }
-}
-
-//
-// This observer listens for Bluetooth Off and dismisses the DeviceScreen
-//
-class BluetoothAdapterStateObserver extends NavigatorObserver {
-  StreamSubscription<BluetoothAdapterState>? _adapterStateSubscription;
-
-  @override
-  void didPush(Route route, Route? previousRoute) {
-    super.didPush(route, previousRoute);
-    if (route.settings.name == '/DeviceScreen') {
-      // Start listening to Bluetooth state changes when a new route is pushed
-      _adapterStateSubscription ??= FlutterBluePlus.adapterState.listen((state) {
-        if (state != BluetoothAdapterState.on) {
-          // Pop the current route if Bluetooth is off
-          navigator?.pop();
-        }
-      });
+    if (!initialized) {
+      final appservice = AppService();
+      appservice.setScreenSize(MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height);
+      initialized = true;
     }
-  }
-
-  @override
-  void didPop(Route route, Route? previousRoute) {
-    super.didPop(route, previousRoute);
-    // Cancel the subscription when the route is popped
-    _adapterStateSubscription?.cancel();
-    _adapterStateSubscription = null;
+    return GetMaterialApp(
+      locale: const Locale('en'), //Get.deviceLocale,
+      fallbackLocale: const Locale('en'),
+      title: AppConstants.appId,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
+      defaultTransition: Transition.fadeIn,
+      getPages: RouteGenerator.appRoutes,
+      initialRoute: AppConstants.splashpage,
+      builder: EasyLoading.init(),
+    );
   }
 }
