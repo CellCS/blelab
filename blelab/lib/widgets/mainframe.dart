@@ -51,7 +51,7 @@ class _MainPageFrameState extends State<MainPageFrame> {
     } else if (index == 1) {
       Get.offNamed(AppConstants.peripheralpage);
     } else if (index == 2) {
-      Get.offNamed(AppConstants.homepage);
+      Get.offNamed(AppConstants.appaboutpage);
     }
   }
 

@@ -10,4 +10,5 @@ class AppConstants {
   static const String homepage = '/home';
   static const String peripheralpage= '/bleperipheral';
   static const String connecteddevicepage= '/connecteddevicepage';
+  static const String appaboutpage= '/aboutpage';
 }
